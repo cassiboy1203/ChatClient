@@ -23,21 +23,39 @@ namespace ChatServer.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string LoginInfo {
+        public string LoginToken {
             get {
-                return ((string)(this["LoginInfo"]));
+                return ((string)(this["LoginToken"]));
+            }
+            set {
+                this["LoginToken"] = value;
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public int UserStatus {
             get {
                 return ((int)(this["UserStatus"]));
+            }
+            set {
+                this["UserStatus"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LoginTime {
+            get {
+                return ((int)(this["LoginTime"]));
+            }
+            set {
+                this["LoginTime"] = value;
             }
         }
     }

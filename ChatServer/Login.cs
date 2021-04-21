@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO.Pipes;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -42,14 +44,15 @@ namespace ChatServer
                 error = true;
             }
 
-            if (pass == string.Empty)
+            if (pass.Length < 8 || pass.Length > 50)
             {
-                this.error.SetError(tbPassword, "Please enter a password.");
+                this.error.SetError(tbPassword, "Please enter a valid password.");
+                error = true;
             }
 
             if (!error)
             {
-                if (AuthClient.CheckLoginInfo(email,pass,out UserInfo userInfo))
+                if (AuthClient.CheckLoginInfo(email,pass,out UserInfo userInfo,out ReplyCodes reply))
                 {
                     _layout.user1.UserInfo = userInfo;
                     _layout.OnLogin();
@@ -59,6 +62,46 @@ namespace ChatServer
                     this.error.SetError(tbPassword, "Password email combination is not valid.");
                 }
             }
+        }
+
+        private bool ValidatePass(string pass)
+        {
+            bool returnValue = true;
+            bool containsSpecialCh = false;
+
+            string specialCh = @"%!@#$%^&*()?/>.<,:;'\|}]{[_~`+=-" + "\"";
+            char[] specialChArray = specialCh.ToCharArray();
+            foreach (char ch in specialChArray)
+            {
+                if (pass.Contains(ch))
+                {
+                    containsSpecialCh = true;
+                    break;
+                }
+            }
+
+            if (pass.Length < 8 || pass.Length > 50)
+            {
+                returnValue = false;
+            }
+            else if (!pass.Any(char.IsUpper))
+            {
+                returnValue = false;
+            }
+            else if (!pass.Any(char.IsLower))
+            {
+                returnValue = false;
+            }
+            else if (pass.Contains(" "))
+            {
+                returnValue = false;
+            }
+            else if (!pass.Any(char.IsDigit) && !containsSpecialCh)
+            {
+                returnValue = false;
+            }
+
+            return returnValue;
         }
 
         private bool dragging = false;

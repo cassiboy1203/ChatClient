@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -74,14 +75,10 @@ namespace ChatServer
         private void Layout_Load(object sender, EventArgs e)
         {
             this.Hide();
-
+            LabelRetry:
             if (AuthClient.ConnectToServer())
             {
-                
-            }
-            else
-            {
-                if (Properties.Settings.Default.LoginInfo == string.Empty)
+                if (Properties.Settings.Default.LoginToken == string.Empty)
                 {
                     Login login = new Login(this);
                     login.Show();
@@ -91,6 +88,11 @@ namespace ChatServer
                     //TODO: get user info.
                     OnLogin();
                 }
+            }
+            else
+            {
+                Thread.Sleep(10000);
+                goto LabelRetry;
             }
         }
     }
