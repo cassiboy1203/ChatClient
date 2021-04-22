@@ -17,12 +17,14 @@ namespace ChatServer
         public Login(Layout layout)
         {
             InitializeComponent();
+            this.SetStyle(ControlStyles.ResizeRedraw, true);
             _layout = layout;
 
             this.ActiveControl = label1;
         }
 
         private readonly Layout _layout;
+        private Resize resize = new Resize();
 
         private void BtnLogin_Click(object sender, EventArgs e)
         {
@@ -44,7 +46,7 @@ namespace ChatServer
                 error = true;
             }
 
-            if (pass.Length < 8 || pass.Length > 50)
+            if (pass.Length < 8 || pass.Length > 100)
             {
                 this.error.SetError(tbPassword, "Please enter a valid password.");
                 error = true;
@@ -56,6 +58,8 @@ namespace ChatServer
                 {
                     _layout.user1.UserInfo = userInfo;
                     _layout.OnLogin();
+                    this.Close();
+                    this.Dispose();
                 }
                 else
                 {
@@ -80,7 +84,7 @@ namespace ChatServer
                 }
             }
 
-            if (pass.Length < 8 || pass.Length > 50)
+            if (pass.Length < 8 || pass.Length > 100)
             {
                 returnValue = false;
             }

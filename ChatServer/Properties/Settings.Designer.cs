@@ -49,13 +49,13 @@ namespace ChatServer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int LoginTime {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string UserToken {
             get {
-                return ((int)(this["LoginTime"]));
+                return ((string)(this["UserToken"]));
             }
             set {
-                this["LoginTime"] = value;
+                this["UserToken"] = value;
             }
         }
     }

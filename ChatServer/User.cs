@@ -12,12 +12,13 @@ namespace ChatServer
 {
     public struct UserInfo
     {
-        public int Id;
+        public string Token;
         public string Name;
         public string Email;
         public UserRoles Role;
         public Image image;
         public UserStatus status;
+        public string FriendCode;
     }
 
     public enum UserStatus
@@ -44,5 +45,12 @@ namespace ChatServer
         }
 
         public UserInfo UserInfo;
+
+        public void UpdateUserInfo()
+        {
+            lbUserName.Text = UserInfo.Name;
+            lbUserId.Text = $"#{UserInfo.FriendCode}";
+            //TODO: update picture
+        }
     }
 }

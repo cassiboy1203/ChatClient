@@ -46,9 +46,10 @@ namespace ChatServer
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(257, 21);
+            this.label1.Location = new System.Drawing.Point(343, 26);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(146, 65);
+            this.label1.Size = new System.Drawing.Size(182, 81);
             this.label1.TabIndex = 0;
             this.label1.Text = "Login";
             // 
@@ -62,9 +63,10 @@ namespace ChatServer
             this.btnLoginRequest.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLoginRequest.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLoginRequest.ForeColor = System.Drawing.Color.White;
-            this.btnLoginRequest.Location = new System.Drawing.Point(252, 286);
+            this.btnLoginRequest.Location = new System.Drawing.Point(336, 352);
+            this.btnLoginRequest.Margin = new System.Windows.Forms.Padding(4);
             this.btnLoginRequest.Name = "btnLoginRequest";
-            this.btnLoginRequest.Size = new System.Drawing.Size(188, 40);
+            this.btnLoginRequest.Size = new System.Drawing.Size(251, 49);
             this.btnLoginRequest.TabIndex = 6;
             this.btnLoginRequest.Text = "Login";
             this.btnLoginRequest.UseVisualStyleBackColor = false;
@@ -83,10 +85,10 @@ namespace ChatServer
             this.btnExit.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
             this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExit.ForeColor = System.Drawing.Color.White;
-            this.btnExit.Location = new System.Drawing.Point(668, 0);
-            this.btnExit.Margin = new System.Windows.Forms.Padding(2);
+            this.btnExit.Location = new System.Drawing.Point(891, 0);
+            this.btnExit.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(22, 20);
+            this.btnExit.Size = new System.Drawing.Size(29, 25);
             this.btnExit.TabIndex = 0;
             this.btnExit.Text = "X";
             this.btnExit.UseVisualStyleBackColor = true;
@@ -99,8 +101,9 @@ namespace ChatServer
             this.FormBorder.Dock = System.Windows.Forms.DockStyle.Top;
             this.FormBorder.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(34)))), ((int)(((byte)(37)))));
             this.FormBorder.Location = new System.Drawing.Point(0, 0);
+            this.FormBorder.Margin = new System.Windows.Forms.Padding(4);
             this.FormBorder.Name = "FormBorder";
-            this.FormBorder.Size = new System.Drawing.Size(690, 20);
+            this.FormBorder.Size = new System.Drawing.Size(920, 25);
             this.FormBorder.TabIndex = 7;
             this.FormBorder.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Login_MouseDown);
             this.FormBorder.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Login_MouseMove);
@@ -112,16 +115,20 @@ namespace ChatServer
             this.tbPassword.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tbPassword.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbPassword.ForeColor = System.Drawing.Color.White;
-            this.tbPassword.Location = new System.Drawing.Point(77, 198);
+            this.tbPassword.Location = new System.Drawing.Point(103, 244);
+            this.tbPassword.Margin = new System.Windows.Forms.Padding(4);
             this.tbPassword.Name = "tbPassword";
+            this.tbPassword.PasswordChar = '●';
             this.tbPassword.PlaceholderAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             this.tbPassword.PlaceholderColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(75)))), ((int)(((byte)(82)))));
             this.tbPassword.PlaceholderEnabled = true;
-            this.tbPassword.PlaceholderOffset = new System.Drawing.Point(10, 0);
+            this.tbPassword.PlaceholderOffset = new System.Drawing.Point(13, 0);
             this.tbPassword.PlaceholderText = "Password";
-            this.tbPassword.Size = new System.Drawing.Size(512, 50);
+            this.tbPassword.Size = new System.Drawing.Size(683, 62);
             this.tbPassword.TabIndex = 2;
             this.tbPassword.TabStop = true;
+            this.tbPassword.TextBoxOffset = new System.Drawing.Point(13, 17);
+            this.tbPassword.UseSystemPasswordChar = true;
             // 
             // tbEmail
             // 
@@ -129,31 +136,36 @@ namespace ChatServer
             this.tbEmail.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tbEmail.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbEmail.ForeColor = System.Drawing.Color.White;
-            this.tbEmail.Location = new System.Drawing.Point(77, 108);
+            this.tbEmail.Location = new System.Drawing.Point(103, 133);
+            this.tbEmail.Margin = new System.Windows.Forms.Padding(4);
             this.tbEmail.Name = "tbEmail";
+            this.tbEmail.PasswordChar = '\0';
             this.tbEmail.PlaceholderAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             this.tbEmail.PlaceholderColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(75)))), ((int)(((byte)(82)))));
             this.tbEmail.PlaceholderEnabled = true;
-            this.tbEmail.PlaceholderOffset = new System.Drawing.Point(10, 0);
+            this.tbEmail.PlaceholderOffset = new System.Drawing.Point(13, 0);
             this.tbEmail.PlaceholderText = "Email";
-            this.tbEmail.Size = new System.Drawing.Size(512, 50);
+            this.tbEmail.Size = new System.Drawing.Size(683, 62);
             this.tbEmail.TabIndex = 1;
             this.tbEmail.TabStop = true;
+            this.tbEmail.TextBoxOffset = new System.Drawing.Point(13, 17);
+            this.tbEmail.UseSystemPasswordChar = false;
             // 
             // Login
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
-            this.ClientSize = new System.Drawing.Size(690, 380);
+            this.ClientSize = new System.Drawing.Size(920, 468);
             this.Controls.Add(this.FormBorder);
             this.Controls.Add(this.btnLoginRequest);
             this.Controls.Add(this.tbPassword);
             this.Controls.Add(this.tbEmail);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Login";
-            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
             ((System.ComponentModel.ISupportInitialize)(this.error)).EndInit();
             this.FormBorder.ResumeLayout(false);

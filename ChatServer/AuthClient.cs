@@ -17,6 +17,7 @@ namespace ChatServer
         LoginInfo = 0x03,
         NewUser = 0x04,
         Logout = 0x05,
+        Disconnect = 0x06,
 
     }
 
@@ -26,12 +27,12 @@ namespace ChatServer
         InvalidKey = 0x01,
         InvalidArgs = 0x02,
         ConnectionSuccessful = 0x03,
-        ConnectionFailed = 0x04,
-        LoginSuccessful = 0x05,
-        LoginFailed = 0x06,
-        UserCreate = 0x07,
-        EmailInUse = 0x08,
-        UserLoggedOut = 0x09,
+        LoginSuccessful = 0x04,
+        LoginFailed = 0x05,
+        UserCreate = 0x06,
+        EmailInUse = 0x07,
+        UserLoggedOut = 0x08,
+        Confirm = 0x09,
 
     }
 
@@ -68,13 +69,33 @@ namespace ChatServer
             }
         }
 
+        public static void DisconnectFromServer()
+        {
+            if (_authServer == null) return;
+
+            byte[] buffer = new byte[21];
+            Array.Copy(AuthKey, 0, buffer, 0, 16);
+            buffer[16] = (byte) ActionCodes.Disconnect;
+            byte[] length = BitConverter.GetBytes(0);
+            Array.Copy(length, 0, buffer, 17, 4);
+
+            _authServer.Send(buffer);
+
+            byte[] reply = new byte[1];
+            _authServer.Receive(reply);
+
+            _authServer.Close();
+            _authServer.Dispose();
+        }
+
         public static bool CheckLoginInfo(string email, string pass, out UserInfo userInfo, out ReplyCodes replyCode)
         {
-            byte[] buffer = new byte[1024];
-            Array.Copy(AuthKey, 0, buffer, 0, 16);
-            buffer[16] = (byte) ActionCodes.Login;
             byte[] message = BuildMessage(email, pass);
             byte[] messageLengthBytes = BitConverter.GetBytes(message.Length);
+            byte[] buffer = new byte[21 + message.Length];
+
+            Array.Copy(AuthKey, 0, buffer, 0, 16);
+            buffer[16] = (byte) ActionCodes.Login;
             Array.Copy(messageLengthBytes, 0, buffer, 17, 4);
             Array.Copy(message, 0, buffer, 21, message.Length);
 
@@ -82,6 +103,7 @@ namespace ChatServer
             
             byte[] reply = new byte[1024];
             int replyLength = _authServer.Receive(reply);
+            Array.Resize(ref buffer, replyLength);
 
             replyCode = (ReplyCodes) reply[0];
             Array.Copy(reply, 1, AuthKey, 0, 16);
@@ -97,14 +119,14 @@ namespace ChatServer
                     string[] responceMessage = ReadMessage(replyMessage);
                     userInfo = new UserInfo
                     {
-                        Id = Convert.ToInt32(responceMessage[0]),
+                        FriendCode = responceMessage[0],
                         Name = responceMessage[1],
                         Email = email,
                         Role = (UserRoles)Convert.ToInt32(responceMessage[2]),
                         status = Properties.Settings.Default.UserStatus != (int)UserStatus.Online ? (UserStatus)Properties.Settings.Default.UserStatus : UserStatus.Online
                     };
                     Properties.Settings.Default.LoginToken = responceMessage[3];
-                    Properties.Settings.Default.LoginTime = Convert.ToInt32(responceMessage[4]);
+                    Properties.Settings.Default.UserToken = responceMessage[4];
                     Properties.Settings.Default.Save();
                     return true;
                 }
@@ -115,49 +137,49 @@ namespace ChatServer
             return false;
         }
 
-        public static bool CheckLoginInfo(string loginInfo, out UserInfo userInfo, out ReplyCodes replyCode)
+        public static bool CheckLoginInfo(out UserInfo userInfo, out ReplyCodes replyCode)
         {
-            byte[] buffer = new byte[1024];
-            Array.Copy(AuthKey, 0, buffer, 0, 16);
-            buffer[16] = (byte) ActionCodes.Login;
-            byte[] message = Encoding.UTF8.GetBytes($"{loginInfo}");
+            string loginToken = Properties.Settings.Default.LoginToken;
+            string userToken = Properties.Settings.Default.UserToken;
+            byte[] message = (UserStatus)Properties.Settings.Default.UserStatus == UserStatus.Online ? BuildMessage(loginToken, userToken) : BuildMessage(loginToken, Properties.Settings.Default.UserStatus.ToString());
             byte[] messageLengthBytes = BitConverter.GetBytes(message.Length);
+            byte[] buffer = new byte[21+ message.Length];
+
+            Array.Copy(AuthKey, 0, buffer, 0, 16);
+            buffer[16] = (byte) ActionCodes.LoginInfo;
             Array.Copy(messageLengthBytes, 0, buffer, 17, 4);
-            Array.Copy(message, 0, buffer, 22, message.Length);
+            Array.Copy(message, 0, buffer, 21, message.Length);
 
             _authServer.Send(buffer);
             
             byte[] reply = new byte[1024];
             int replyLength = _authServer.Receive(reply);
 
+            Array.Resize(ref buffer, replyLength);
+
             replyCode = (ReplyCodes) reply[0];
             Array.Copy(reply, 1, AuthKey, 0, 16);
-            int messageLength = BitConverter.ToInt32(reply,17);
-            int pointer = replyLength - 21;
-            message = new byte[messageLength];
-            Array.Copy(reply, 22, message, 0, pointer);
 
-            while (pointer < messageLength)
-            {
-                buffer = new byte[1024];
-                int length = _authServer.Receive(buffer);
-                Array.Copy(buffer, 0, message, pointer, length);
-                pointer += length;
-            }
-
-            string[] responceMessage = Encoding.UTF8.GetString(message).Split(',');
+            int messageLength = BitConverter.ToInt32(reply, 17);
 
             if (replyCode == ReplyCodes.LoginSuccessful)
             {
-                userInfo = new UserInfo
+                if (messageLength > 0)
                 {
-                    Id = Convert.ToInt32(responceMessage[0]),
-                    Name = responceMessage[1],
-                    Email = responceMessage[2],
-                    Role = (UserRoles)Convert.ToInt32(responceMessage[3]),
-                    status = Properties.Settings.Default.UserStatus != (int)UserStatus.Online ? (UserStatus)Properties.Settings.Default.UserStatus : UserStatus.Online
-                };
-                return true;
+                    byte[] replyMessage = new byte[messageLength];
+                    Array.Copy(reply, 21, replyMessage, 0, messageLength);
+                    string[] responceMessage = ReadMessage(replyMessage);
+                    userInfo = new UserInfo
+                    {
+                        Token = responceMessage[0],
+                        Name = responceMessage[1],
+                        Email = responceMessage[2],
+                        Role = (UserRoles)Convert.ToInt32(responceMessage[3]),
+                        status = Properties.Settings.Default.UserStatus != (int)UserStatus.Online ? (UserStatus)Properties.Settings.Default.UserStatus : UserStatus.Online,
+                        FriendCode = responceMessage[4]
+                    };
+                    return true;
+                }
             }
 
             userInfo = new UserInfo();

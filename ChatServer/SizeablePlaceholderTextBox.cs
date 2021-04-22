@@ -22,7 +22,7 @@ namespace ChatServer
         }
         [
             Category("TextBox"),
-            Description("TextBox")
+            Description("TextBox offset")
         ]
         public Point TextBoxOffset
         {
@@ -30,6 +30,32 @@ namespace ChatServer
             set
             {
                 _textBox.Location = value;
+                _textBox.Invalidate();
+            }
+        }
+        [
+            Category("TextBox"),
+            Description("Use system password char")
+        ]
+        public bool UseSystemPasswordChar
+        {
+            get => _textBox.UseSystemPasswordChar;
+            set
+            {
+                _textBox.UseSystemPasswordChar = value;
+                _textBox.Invalidate();
+            }
+        }
+        [
+            Category("TextBox"),
+            Description("The used password char")
+        ]
+        public char PasswordChar
+        {
+            get => _textBox.PasswordChar;
+            set
+            {
+                _textBox.PasswordChar = value;
                 _textBox.Invalidate();
             }
         }

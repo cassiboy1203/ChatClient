@@ -18,16 +18,28 @@ namespace ChatServer
         {
             InitializeComponent();
             this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
+            this.ControlBox = false;
+            this.Text = String.Empty;
+            this.MinimizeBox = false;
+            this.MaximizeBox = false;
+        }
+
+        public void OnLogin()
+        {
+            Show();
+            user1.UpdateUserInfo();
         }
 
         private bool dragging = false;
         private Point dragCursorPoint;
         private Point dragFormPoint;
 
-        public void OnLogin()
+        public override Size MinimumSize
         {
-            Show();
+            get => base.MinimumSize; 
+            set => base.MinimumSize = new Size(800, 500);
         }
+
 
         private void Form1_MouseDown(object sender, MouseEventArgs e)
         {
@@ -78,22 +90,41 @@ namespace ChatServer
             LabelRetry:
             if (AuthClient.ConnectToServer())
             {
-                if (Properties.Settings.Default.LoginToken == string.Empty)
+                //Properties.Settings.Default.Reset();
+                LabelRetryLogin:
+                string loginToken = Properties.Settings.Default.LoginToken;
+                //MessageBox.Show(loginToken);
+                if (string.IsNullOrEmpty(loginToken))
                 {
                     Login login = new Login(this);
                     login.Show();
                 }
                 else
                 {
-                    //TODO: get user info.
-                    OnLogin();
+                    if (AuthClient.CheckLoginInfo(out UserInfo userInfo, out ReplyCodes replyCode))
+                    {
+                        user1.UserInfo = userInfo;
+                        OnLogin();
+                    }
+                    else
+                    {
+                        Properties.Settings.Default.LoginToken = null;
+                        Properties.Settings.Default.Save();
+                        goto LabelRetryLogin;
+                    }
                 }
             }
             else
             {
-                Thread.Sleep(10000);
+                Thread.Sleep(2000);
+                //TODO: show unable to connect to server, retrying to connect.
                 goto LabelRetry;
             }
+        }
+
+        private void Layout_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            AuthClient.DisconnectFromServer();
         }
     }
 }
