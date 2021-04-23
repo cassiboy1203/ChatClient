@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace ChatServer
 {
-    class SizeAblePlaceholderTextBox : Panel
+    public class SizeAblePlaceholderTextBox : Panel
     {
         [
             Category("TextBox"),
@@ -13,11 +13,11 @@ namespace ChatServer
         ]
         public string Text
         {
-            get => _textBox.Text;
+            get => TextBox.Text;
             set
             {
-                _textBox.Text = value;
-                _textBox.Invalidate();
+                TextBox.Text = value;
+                TextBox.Invalidate();
             }
         }
         [
@@ -26,11 +26,11 @@ namespace ChatServer
         ]
         public Point TextBoxOffset
         {
-            get => _textBox.Location;
+            get => TextBox.Location;
             set
             {
-                _textBox.Location = value;
-                _textBox.Invalidate();
+                TextBox.Location = value;
+                TextBox.Invalidate();
             }
         }
         [
@@ -39,11 +39,11 @@ namespace ChatServer
         ]
         public bool UseSystemPasswordChar
         {
-            get => _textBox.UseSystemPasswordChar;
+            get => TextBox.UseSystemPasswordChar;
             set
             {
-                _textBox.UseSystemPasswordChar = value;
-                _textBox.Invalidate();
+                TextBox.UseSystemPasswordChar = value;
+                TextBox.Invalidate();
             }
         }
         [
@@ -52,11 +52,11 @@ namespace ChatServer
         ]
         public char PasswordChar
         {
-            get => _textBox.PasswordChar;
+            get => TextBox.PasswordChar;
             set
             {
-                _textBox.PasswordChar = value;
-                _textBox.Invalidate();
+                TextBox.PasswordChar = value;
+                TextBox.Invalidate();
             }
         }
         [
@@ -127,16 +127,16 @@ namespace ChatServer
         }
 
         private readonly Placeholder _placeholder;
-        private PlaceholderTextBox _textBox;
+        public readonly PlaceholderTextBox TextBox;
 
         public SizeAblePlaceholderTextBox()
         {
             _placeholder = new Placeholder(this);
 
-            _textBox = new PlaceholderTextBox(_placeholder);
-            _textBox.BorderStyle = BorderStyle.None;
-            Size = new Size(this.Width - TextBoxOffset.X, _textBox.Height);
-            Location = new Point(10, this.Height / 2 - _textBox.Height / 2);
+            TextBox = new PlaceholderTextBox(_placeholder);
+            TextBox.BorderStyle = BorderStyle.None;
+            Size = new Size(this.Width - TextBoxOffset.X, TextBox.Height);
+            Location = new Point(10, this.Height / 2 - TextBox.Height / 2);
 
             _placeholder.Location = new Point(10,0);
             _placeholder.Size = new Size(this.Width - PlaceholderOffset.X, this.Height - PlaceholderOffset.Y * 2);
@@ -146,27 +146,27 @@ namespace ChatServer
             _placeholder.TextAlign = ContentAlignment.MiddleLeft;
 
             Controls.Add(_placeholder);
-            Controls.Add(_textBox);
+            Controls.Add(TextBox);
         }
 
         public void EnterTextbox()
         {
-            _textBox.Select();
+            TextBox.Select();
         }
 
         protected override void OnClick(EventArgs e)
         {
             base.OnClick(e);
 
-            _textBox.Select();
+            TextBox.Select();
         }
 
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
 
-            _textBox.Size = new Size(this.Width - PlaceholderOffset.X,_textBox.Height);
-            _textBox.Location = new Point(PlaceholderOffset.X, this.Height / 2 - _textBox.Height / 2);
+            TextBox.Size = new Size(this.Width - PlaceholderOffset.X,TextBox.Height);
+            TextBox.Location = new Point(PlaceholderOffset.X, this.Height / 2 - TextBox.Height / 2);
             _placeholder.Size = new Size(this.Width - PlaceholderOffset.X, this.Height - PlaceholderOffset.Y * 2);
         }
 
@@ -174,9 +174,9 @@ namespace ChatServer
         {
             base.OnFontChanged(e);
 
-            _textBox.Font = this.Font;
-            _textBox.Size = new Size(this.Width - PlaceholderOffset.X,_textBox.Height);
-            _textBox.Location = new Point(PlaceholderOffset.X, this.Height / 2 - _textBox.Height / 2);
+            TextBox.Font = this.Font;
+            TextBox.Size = new Size(this.Width - PlaceholderOffset.X,TextBox.Height);
+            TextBox.Location = new Point(PlaceholderOffset.X, this.Height / 2 - TextBox.Height / 2);
 
             _placeholder.Font = this.Font;
             _placeholder.Size = new Size(this.Width - PlaceholderOffset.X, this.Height - PlaceholderOffset.Y * 2);
@@ -187,14 +187,14 @@ namespace ChatServer
             base.OnBackColorChanged(e);
 
             _placeholder.BackColor = this.BackColor;
-            _textBox.BackColor = this.BackColor;
+            TextBox.BackColor = this.BackColor;
         }
 
         protected override void OnForeColorChanged(EventArgs e)
         {
             base.OnForeColorChanged(e);
 
-            _textBox.ForeColor = this.ForeColor;
+            TextBox.ForeColor = this.ForeColor;
         }
     }
 }

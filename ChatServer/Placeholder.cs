@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace ChatServer
 {
-    class Placeholder : Label
+    public class Placeholder : Label
     {
         public Placeholder(SizeAblePlaceholderTextBox panel)
         {

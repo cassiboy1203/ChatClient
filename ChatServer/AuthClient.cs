@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -18,6 +19,7 @@ namespace ChatServer
         NewUser = 0x04,
         Logout = 0x05,
         Disconnect = 0x06,
+        AddFriend = 0x07,
 
     }
 
@@ -33,6 +35,9 @@ namespace ChatServer
         EmailInUse = 0x07,
         UserLoggedOut = 0x08,
         Confirm = 0x09,
+        FriendRequestSend = 0x0A,
+        UserNotFound = 0x0B,
+        FriendRequestExists = 0x0C,
 
     }
 
@@ -187,7 +192,29 @@ namespace ChatServer
             return false;
         }
 
-        private static string[] ReadMessage(byte[] buffer)
+        public static bool SendFriendRequest(string userName, string friendCode, out ReplyCodes reply)
+        {
+            byte[] message = BuildMessage(userName, friendCode);
+            byte[] messageLengthBytes = BitConverter.GetBytes(message.Length);
+            byte[] buffer = new byte[message.Length + 21];
+            Array.Copy(AuthKey, 0, buffer, 0, 16);
+            buffer[16] = (byte) ActionCodes.AddFriend;
+            Array.Copy(messageLengthBytes, 0, buffer, 17, 4);
+            Array.Copy(message, 0, buffer, 21, message.Length);
+
+            _authServer.Send(buffer);
+
+            buffer = new byte[1024];
+            int length = _authServer.Receive(buffer);
+            Array.Resize(ref buffer, length);
+
+            reply = (ReplyCodes) buffer[0];
+            Array.Copy(buffer, 1, AuthKey, 0, 16);
+
+            return reply == ReplyCodes.FriendRequestSend;
+        }
+
+            private static string[] ReadMessage(byte[] buffer)
         {
             int pointer = 0;
             List<string> messages = new List<string>();
