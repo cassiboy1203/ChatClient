@@ -18,52 +18,127 @@ namespace ChatServer
             InitializeComponent();
         }
 
-        private enum Screens
+        private enum Screens : int
         {
-            Online,
-            All,
-            Pending,
-            Blocked,
+            Online = 0,
+            All = 1,
+            Pending = 2,
+            Blocked = 3,
             AddFriend
         }
 
         public Layout MainLayout { get => _layout; set => _layout = value; }
+        public List<Friend> Friends;
+        public List<Friend> Requests;
 
         private Layout _layout;
-        private FriendList _friendList;
+        public FriendList FriendList;
         private AddFriend _addFriend;
         private Screens _selectedScreen = Screens.Online;
 
-        public void OpenFriendList()
+        public void SetupMenu()
         {
-            switch (_selectedScreen)
+            AuthClient.GetFriends(ActionCodes.GetFriends, out Friends);
+            AuthClient.GetFriends(ActionCodes.GetRequest, out Requests);
+        }
+
+        private void ShowFriendList(Screens filter)
+        {
+            if (!_layout.Controls.Contains(FriendList))
             {
-                case Screens.Online:
-                    break;
-                case Screens.All:
-                    break;
+                FriendList = new FriendList();
+                FriendList.Dock = DockStyle.Fill;
+                _layout.Controls.Add(FriendList);
+                FriendList.BringToFront();
+                FriendList.AutoScroll = true;
+            }
+
+            foreach (var friend in Friends)
+            {
+                FriendList.Controls.Remove(friend);
+            }
+
+            foreach (var request in Requests)
+            {
+                FriendList.Controls.Remove(request);
+            }
+
+            List<Friend> friends = Friends;
+
+            switch (filter)
+            {
                 case Screens.Pending:
+                    friends = Requests;
                     break;
                 case Screens.Blocked:
+                    //TODO: get blocked users
                     break;
-                case Screens.AddFriend:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
+            if (friends != null)
+            {
+                int count = 0;
+                foreach (var friend in friends)
+                {
+                    switch (filter)
+                    {
+                        case Screens.Online:
+                            if (friend.Status == UserStatus.Offline || friend.Status == UserStatus.Invisible)
+                            {
+                                continue;
+                            }
+                            break;
+                        case Screens.Blocked:
+                            //TODO: get blocked
+                            break;
+                    }
+                    friend.Location = new Point(0,70 + count * 100);
+                    friend.Size = new Size(FriendList.Width, 100);
+                    friend.Anchor = (AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right);
+                    
+                    FriendList.Controls.Add(friend);
+                    friend.BringToFront();
+                }
+
+                switch (filter)
+                {
+                    case Screens.Online:
+                        FriendList.lbFriendAmount.Text = $"ONLINE - {count}";
+                        break;
+                    case Screens.All:
+                        FriendList.lbFriendAmount.Text = $"ALL FRIENDS - {friends.Count}";
+                        break;
+                    case Screens.Pending:
+                        FriendList.lbFriendAmount.Text = $"PENDING - {count}";
+                        break;
+                    case Screens.Blocked:
+                        FriendList.lbFriendAmount.Text = $"BLOCKED - {count}";
+                        break;
+                }
+            }
+            else
+            {
+                switch (filter)
+                {
+                    case Screens.Online:
+                        FriendList.lbFriendAmount.Text = $"ONLINE - 0";
+                        break;
+                    case Screens.All:
+                        FriendList.lbFriendAmount.Text = $"ALL FRIENDS - 0";
+                        break;
+                    case Screens.Pending:
+                        FriendList.lbFriendAmount.Text = $"PENDING - 0";
+                        break;
+                    case Screens.Blocked:
+                        FriendList.lbFriendAmount.Text = $"BLOCKED - 0";
+                        break;
+                }
+            }
+
+            FriendList.Visible = true;
+            if (_addFriend != null) _addFriend.Visible = false;
         }
 
-        private void BtnAddFriends_Click(object sender, EventArgs e)
-        {
-            _layout.OpenScreen = ChatServer.Layout.CurrentScreen.AddFriend;
-            btnAddFriends.BackColor = Color.FromArgb(56,82,76);
-            btnAddFriends.FlatAppearance.BorderColor = btnAddFriends.BackColor;
-            btnAddFriends.FlatAppearance.MouseOverBackColor = btnAddFriends.BackColor;
-            btnAddFriends.ForeColor = Color.FromArgb(67, 181, 115);
-            OpenFriendScreen();
-        }
-
-        private void OpenFriendScreen()
+        private void OpenAddFriendScreen()
         {
             if (!_layout.Controls.Contains(_addFriend))
             {
@@ -76,7 +151,7 @@ namespace ChatServer
             else
             {
                 _addFriend.Visible = true;
-                _friendList.Visible = false;
+                FriendList.Visible = false;
             }
         }
 
@@ -110,6 +185,48 @@ namespace ChatServer
             {
                 _addFriend.error.SetError(_addFriend.tbFriend, "Invalid friend request use 'Username#0000'.");
             }
+        }
+        
+        private void BtnAddFriends_Click(object sender, EventArgs e)
+        {
+            _layout.OpenScreen = ChatServer.Layout.CurrentScreen.AddFriend;
+            btnAddFriends.BackColor = Color.FromArgb(56,82,76);
+            btnAddFriends.FlatAppearance.BorderColor = btnAddFriends.BackColor;
+            btnAddFriends.FlatAppearance.MouseOverBackColor = btnAddFriends.BackColor;
+            btnAddFriends.ForeColor = Color.FromArgb(67, 181, 115);
+            OpenAddFriendScreen();
+
+            lbOnline.ForeColor = Color.Silver;
+            lbAll.ForeColor = Color.Silver;
+            lbPending.ForeColor = Color.Silver;
+            lbBlocked.ForeColor = Color.Silver;
+        }
+
+        private void LbOnline_Click(object sender, EventArgs e)
+        {
+            ShowFriendList(Screens.Online);
+            lbOnline.ForeColor = Color.White;
+            lbAll.ForeColor = Color.Silver;
+            lbPending.ForeColor = Color.Silver;
+            lbBlocked.ForeColor = Color.Silver;
+        }
+
+        private void LbAll_Click(object sender, EventArgs e)
+        {
+            ShowFriendList(Screens.All);
+            lbOnline.ForeColor = Color.Silver;
+            lbAll.ForeColor = Color.White;
+            lbPending.ForeColor = Color.Silver;
+            lbBlocked.ForeColor = Color.Silver;
+        }
+
+        private void LbPending_Click(object sender, EventArgs e)
+        {
+            ShowFriendList(Screens.Pending);
+            lbOnline.ForeColor = Color.Silver;
+            lbAll.ForeColor = Color.Silver;
+            lbPending.ForeColor = Color.White;
+            lbBlocked.ForeColor = Color.Silver;
         }
     }
 }

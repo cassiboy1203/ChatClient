@@ -37,21 +37,23 @@ namespace ChatServer
             this.lbFriendAmount.AutoSize = true;
             this.lbFriendAmount.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbFriendAmount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(204)))), ((int)(((byte)(206)))));
-            this.lbFriendAmount.Location = new System.Drawing.Point(15, 18);
+            this.lbFriendAmount.Location = new System.Drawing.Point(20, 22);
+            this.lbFriendAmount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbFriendAmount.Name = "lbFriendAmount";
-            this.lbFriendAmount.Size = new System.Drawing.Size(135, 32);
+            this.lbFriendAmount.Size = new System.Drawing.Size(166, 41);
             this.lbFriendAmount.TabIndex = 0;
             this.lbFriendAmount.Text = "ONLINE - 4";
             // 
             // FriendList
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
             this.Controls.Add(this.lbFriendAmount);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FriendList";
-            this.Size = new System.Drawing.Size(1520, 1010);
+            this.Size = new System.Drawing.Size(278, 102);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -59,6 +61,6 @@ namespace ChatServer
 
         #endregion
 
-        private System.Windows.Forms.Label lbFriendAmount;
+        public System.Windows.Forms.Label lbFriendAmount;
     }
 }

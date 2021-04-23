@@ -54,7 +54,7 @@ namespace ChatServer
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Location = new System.Drawing.Point(187, 12);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1, 36);
             this.panel1.TabIndex = 1;
@@ -70,6 +70,7 @@ namespace ChatServer
             this.lbOnline.Size = new System.Drawing.Size(95, 37);
             this.lbOnline.TabIndex = 2;
             this.lbOnline.Text = "Online";
+            this.lbOnline.Click += new System.EventHandler(this.LbOnline_Click);
             // 
             // lbAll
             // 
@@ -82,6 +83,7 @@ namespace ChatServer
             this.lbAll.Size = new System.Drawing.Size(48, 37);
             this.lbAll.TabIndex = 3;
             this.lbAll.Text = "All";
+            this.lbAll.Click += new System.EventHandler(this.LbAll_Click);
             // 
             // lbPending
             // 
@@ -94,6 +96,7 @@ namespace ChatServer
             this.lbPending.Size = new System.Drawing.Size(114, 37);
             this.lbPending.TabIndex = 4;
             this.lbPending.Text = "Pending";
+            this.lbPending.Click += new System.EventHandler(this.LbPending_Click);
             // 
             // lbBlocked
             // 
@@ -117,7 +120,7 @@ namespace ChatServer
             this.btnAddFriends.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAddFriends.ForeColor = System.Drawing.Color.White;
             this.btnAddFriends.Location = new System.Drawing.Point(611, 10);
-            this.btnAddFriends.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAddFriends.Margin = new System.Windows.Forms.Padding(4);
             this.btnAddFriends.Name = "btnAddFriends";
             this.btnAddFriends.Size = new System.Drawing.Size(167, 42);
             this.btnAddFriends.TabIndex = 7;
@@ -138,7 +141,7 @@ namespace ChatServer
             this.Controls.Add(this.lbOnline);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.lbFriends);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FriendListMenu";
             this.Size = new System.Drawing.Size(850, 60);
             this.ResumeLayout(false);

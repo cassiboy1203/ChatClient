@@ -35,6 +35,7 @@ namespace ChatServer
 
         public void OnLogin()
         {
+            friendListMenu1.SetupMenu();
             Show();
             user1.UpdateUserInfo();
             //TODO: open friendlist screen
@@ -101,7 +102,7 @@ namespace ChatServer
             LabelRetry:
             if (AuthClient.ConnectToServer())
             {
-                //Properties.Settings.Default.Reset();
+                Properties.Settings.Default.Reset();
                 LabelRetryLogin:
                 string loginToken = Properties.Settings.Default.LoginToken;
                 //MessageBox.Show(loginToken);
