@@ -59,6 +59,20 @@ namespace ChatServer
                 TextBox.Invalidate();
             }
         }
+
+        [
+            Category("TextBox"),
+            Description("Character casing")
+        ]
+        public CharacterCasing CharacterCasing
+        {
+            get => TextBox.CharacterCasing;
+            set
+            {
+                TextBox.CharacterCasing = value;
+                TextBox.Invalidate();
+            }
+        }
         [
             Category("Placeholder"),
             Description("If the placeholder is enabled")

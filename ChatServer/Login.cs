@@ -30,7 +30,7 @@ namespace ChatServer
         {
             this.error.Clear();
 
-            string email = tbEmail.Text;
+            string email = tbEmail.Text.ToLower();
             string pass = tbPassword.Text;
 
             bool error = false;

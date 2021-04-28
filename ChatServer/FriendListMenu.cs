@@ -206,6 +206,10 @@ namespace ChatServer
             lbAll.ForeColor = Color.Silver;
             lbPending.ForeColor = Color.Silver;
             lbBlocked.ForeColor = Color.Silver;
+            btnAddFriends.BackColor = Color.FromArgb(67, 181, 115);
+            btnAddFriends.FlatAppearance.BorderColor = btnAddFriends.BackColor;
+            btnAddFriends.FlatAppearance.MouseOverBackColor = btnAddFriends.BackColor;
+            btnAddFriends.ForeColor = Color.White;
         }
 
         private void LbAll_Click(object sender, EventArgs e)
@@ -215,6 +219,10 @@ namespace ChatServer
             lbAll.ForeColor = Color.White;
             lbPending.ForeColor = Color.Silver;
             lbBlocked.ForeColor = Color.Silver;
+            btnAddFriends.BackColor = Color.FromArgb(67, 181, 115);
+            btnAddFriends.FlatAppearance.BorderColor = btnAddFriends.BackColor;
+            btnAddFriends.FlatAppearance.MouseOverBackColor = btnAddFriends.BackColor;
+            btnAddFriends.ForeColor = Color.White;
         }
 
         private void LbPending_Click(object sender, EventArgs e)
@@ -224,6 +232,10 @@ namespace ChatServer
             lbAll.ForeColor = Color.Silver;
             lbPending.ForeColor = Color.White;
             lbBlocked.ForeColor = Color.Silver;
+            btnAddFriends.BackColor = Color.FromArgb(67, 181, 115);
+            btnAddFriends.FlatAppearance.BorderColor = btnAddFriends.BackColor;
+            btnAddFriends.FlatAppearance.MouseOverBackColor = btnAddFriends.BackColor;
+            btnAddFriends.ForeColor = Color.White;
         }
     }
 }
