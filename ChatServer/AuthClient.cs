@@ -22,6 +22,8 @@ namespace ChatServer
         AddFriend = 0x07,
         GetFriends = 0x08,
         GetRequest = 0x09,
+        AcceptRequest = 0x0A,
+        RejectRequest = 0x0B,
 
     }
 
@@ -218,7 +220,7 @@ namespace ChatServer
             return reply == ReplyCodes.FriendRequestSend;
         }
 
-        public static bool GetFriends(ActionCodes filter, out List<Friend> friends)
+        public static bool GetFriends(ActionCodes filter, FriendListMenu flm, out List<Friend> friends)
         {
             friends = new List<Friend>();
 
@@ -262,8 +264,7 @@ namespace ChatServer
                     Friend friend;
                     if (filter == ActionCodes.GetRequest)
                     {
-                        var requestInfo = Convert.ToInt32(Encoding.UTF8.GetString(messageList[2]));
-                        friend = new Friend(friendToken, friendName, requestInfo);
+                        friend = new Friend(friendToken, friendName, flm);
                     }
                     else
                     {
@@ -277,6 +278,28 @@ namespace ChatServer
             }
 
             return false;
+        }
+
+        public static bool FriendRequestReply(string userToken, bool isAccepted)
+        {
+            byte[] message = BuildMessage(userToken);
+            byte[] messageLengthBytes = BitConverter.GetBytes(message.Length);
+            byte[] buffer = new byte[message.Length + 21];
+            Array.Copy(AuthKey, 0, buffer, 0, 16);
+            buffer[16] = isAccepted ? (byte) ActionCodes.AcceptRequest : (byte) ActionCodes.RejectRequest;
+            Array.Copy(messageLengthBytes, 0, buffer, 17, 4);
+            Array.Copy(message, 0, buffer, 21, message.Length);
+
+            _authServer.Send(buffer);
+
+            buffer = new byte[1024];
+            int replyLength = _authServer.Receive(buffer);
+            Array.Resize(ref buffer, replyLength);
+
+            ReplyCodes reply = (ReplyCodes) buffer[0];
+            Array.Copy(buffer, 1, AuthKey, 0, 16);
+
+            return reply != ReplyCodes.InvalidAction && reply != ReplyCodes.InvalidArgs && reply != ReplyCodes.InvalidKey;
         }
 
         private static void GetFullMessage(int length, int pointer, ref byte[] message)

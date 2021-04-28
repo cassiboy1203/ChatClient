@@ -38,8 +38,9 @@ namespace ChatServer
 
         public void SetupMenu()
         {
-            AuthClient.GetFriends(ActionCodes.GetFriends, out Friends);
-            AuthClient.GetFriends(ActionCodes.GetRequest, out Requests);
+            AuthClient.GetFriends(ActionCodes.GetFriends, this, out Friends);
+            AuthClient.GetFriends(ActionCodes.GetRequest, this, out Requests);
+            ShowFriendList(_selectedScreen);
         }
 
         private void ShowFriendList(Screens filter)
@@ -53,17 +54,9 @@ namespace ChatServer
                 FriendList.AutoScroll = true;
             }
 
-            foreach (var friend in Friends)
-            {
-                FriendList.Controls.Remove(friend);
-            }
-
-            foreach (var request in Requests)
-            {
-                FriendList.Controls.Remove(request);
-            }
-
             List<Friend> friends = Friends;
+            FriendList.lbFriends.Items.Clear();
+            FriendList.lbFriends.Controls.Clear();
 
             switch (filter)
             {
@@ -87,16 +80,20 @@ namespace ChatServer
                                 continue;
                             }
                             break;
+                        case Screens.Pending:
+                            friend.btnAccept.Visible = true;
+                            friend.btnReject.Visible = true;
+                            break;
                         case Screens.Blocked:
                             //TODO: get blocked
                             break;
                     }
-                    friend.Location = new Point(0,70 + count * 100);
-                    friend.Size = new Size(FriendList.Width, 100);
+                    friend.Size = new Size(FriendList.lbFriends.Width, friend.Height);
                     friend.Anchor = (AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right);
-                    
-                    FriendList.Controls.Add(friend);
-                    friend.BringToFront();
+                    FriendList.lbFriends.Items.Add(friend);
+                    FriendList.lbFriends.Controls.Add(friend);
+
+                    count += 1;
                 }
 
                 switch (filter)
@@ -105,7 +102,7 @@ namespace ChatServer
                         FriendList.lbFriendAmount.Text = $"ONLINE - {count}";
                         break;
                     case Screens.All:
-                        FriendList.lbFriendAmount.Text = $"ALL FRIENDS - {friends.Count}";
+                        FriendList.lbFriendAmount.Text = $"ALL FRIENDS - {count}";
                         break;
                     case Screens.Pending:
                         FriendList.lbFriendAmount.Text = $"PENDING - {count}";

@@ -30,6 +30,7 @@ namespace ChatServer
         private void InitializeComponent()
         {
             this.lbFriendAmount = new System.Windows.Forms.Label();
+            this.lbFriends = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // lbFriendAmount
@@ -44,16 +45,32 @@ namespace ChatServer
             this.lbFriendAmount.TabIndex = 0;
             this.lbFriendAmount.Text = "ONLINE - 4";
             // 
+            // lbFriends
+            // 
+            this.lbFriends.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbFriends.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
+            this.lbFriends.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lbFriends.FormattingEnabled = true;
+            this.lbFriends.ItemHeight = 16;
+            this.lbFriends.Location = new System.Drawing.Point(27, 80);
+            this.lbFriends.Name = "lbFriends";
+            this.lbFriends.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.lbFriends.Size = new System.Drawing.Size(549, 160);
+            this.lbFriends.TabIndex = 1;
+            // 
             // FriendList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
+            this.Controls.Add(this.lbFriends);
             this.Controls.Add(this.lbFriendAmount);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FriendList";
-            this.Size = new System.Drawing.Size(278, 102);
+            this.Size = new System.Drawing.Size(604, 285);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -62,5 +79,6 @@ namespace ChatServer
         #endregion
 
         public System.Windows.Forms.Label lbFriendAmount;
+        public System.Windows.Forms.ListBox lbFriends;
     }
 }

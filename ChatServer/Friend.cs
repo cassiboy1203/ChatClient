@@ -24,12 +24,12 @@ namespace ChatServer
             UpdateFriend();
         }
 
-        public Friend(string token, string name, int requestInfo)
+        public Friend(string token, string name, FriendListMenu friendListMenu)
         {
             InitializeComponent();
             Token = token;
             UserName = name;
-            RequestInfo = requestInfo;
+            _friendListMenu = friendListMenu;
 
             UpdateFriend();
         }
@@ -37,8 +37,8 @@ namespace ChatServer
         public string Token;
         public string UserName;
         public UserStatus Status;
-        public int RequestInfo;
         public Image Image;
+        private FriendListMenu _friendListMenu;
 
         private void UpdateFriend()
         {
@@ -51,12 +51,18 @@ namespace ChatServer
 
         private void BtnAccept_Click(object sender, EventArgs e)
         {
-            //TODO: accept request.
+            if (AuthClient.FriendRequestReply(Token, true))
+            {
+                _friendListMenu.SetupMenu();
+            }
         }
 
         private void BtnReject_Click(object sender, EventArgs e)
         {
-            //TODO: reject request.
+            if (AuthClient.FriendRequestReply(Token, false))
+            {
+                _friendListMenu.SetupMenu();
+            }
         }
 
         //TODO: On status change.

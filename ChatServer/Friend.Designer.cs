@@ -99,23 +99,29 @@ namespace ChatServer
             // btnAccept
             // 
             this.btnAccept.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAccept.Location = new System.Drawing.Point(410, 27);
+            this.btnAccept.BackColor = System.Drawing.Color.Lime;
+            this.btnAccept.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAccept.Location = new System.Drawing.Point(407, 32);
             this.btnAccept.Name = "btnAccept";
             this.btnAccept.Size = new System.Drawing.Size(61, 41);
             this.btnAccept.TabIndex = 9;
             this.btnAccept.Text = "Accept";
-            this.btnAccept.UseVisualStyleBackColor = true;
+            this.btnAccept.UseVisualStyleBackColor = false;
+            this.btnAccept.Visible = false;
             this.btnAccept.Click += new System.EventHandler(this.BtnAccept_Click);
             // 
             // btnReject
             // 
             this.btnReject.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReject.Location = new System.Drawing.Point(343, 27);
+            this.btnReject.BackColor = System.Drawing.Color.Red;
+            this.btnReject.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReject.Location = new System.Drawing.Point(340, 32);
             this.btnReject.Name = "btnReject";
             this.btnReject.Size = new System.Drawing.Size(61, 41);
             this.btnReject.TabIndex = 10;
             this.btnReject.Text = "Reject";
-            this.btnReject.UseVisualStyleBackColor = true;
+            this.btnReject.UseVisualStyleBackColor = false;
+            this.btnReject.Visible = false;
             this.btnReject.Click += new System.EventHandler(this.BtnReject_Click);
             // 
             // Friend
@@ -147,7 +153,7 @@ namespace ChatServer
         private RoundPictureBox pbFriendImage;
         private System.Windows.Forms.Panel panel1;
         private RoundPictureBox pbStatus;
-        private System.Windows.Forms.Button btnAccept;
-        private System.Windows.Forms.Button btnReject;
+        public System.Windows.Forms.Button btnAccept;
+        public System.Windows.Forms.Button btnReject;
     }
 }
