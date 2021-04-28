@@ -21,7 +21,7 @@ namespace ChatServer
         public string FriendCode;
     }
 
-    public enum UserStatus
+    public enum UserStatus : byte
     {
         Online = 0,
         Offline = 1,
@@ -30,7 +30,7 @@ namespace ChatServer
         Invisible = 4
     }
 
-    public enum UserRoles
+    public enum UserRoles : byte
     {
         User = 0,
         Mod = 29,

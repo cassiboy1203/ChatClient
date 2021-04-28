@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace ChatServer
 {
-    class PlaceholderTextBox : TextBox
+    public class PlaceholderTextBox : TextBox
     {
         public PlaceholderTextBox(Placeholder placeholder)
         {

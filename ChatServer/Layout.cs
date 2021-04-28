@@ -18,16 +18,28 @@ namespace ChatServer
         {
             InitializeComponent();
             this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
-            this.ControlBox = false;
-            this.Text = String.Empty;
-            this.MinimizeBox = false;
-            this.MaximizeBox = false;
+            this.friendListMenu1.MainLayout = this;
         }
+
+        public enum CurrentScreen
+        {
+            None,
+            FriendList,
+            AddFriend,
+            Server,
+            Login,
+            CreateJoinServer
+        }
+
+        public CurrentScreen OpenScreen = CurrentScreen.Login;
 
         public void OnLogin()
         {
+            friendListMenu1.SetupMenu();
             Show();
             user1.UpdateUserInfo();
+            //TODO: open friendlist screen
+            OpenScreen = CurrentScreen.FriendList;
         }
 
         private bool dragging = false;
@@ -37,7 +49,7 @@ namespace ChatServer
         public override Size MinimumSize
         {
             get => base.MinimumSize; 
-            set => base.MinimumSize = new Size(800, 500);
+            set => base.MinimumSize = new Size(900, 500);
         }
 
 
@@ -90,7 +102,7 @@ namespace ChatServer
             LabelRetry:
             if (AuthClient.ConnectToServer())
             {
-                //Properties.Settings.Default.Reset();
+                Properties.Settings.Default.Reset();
                 LabelRetryLogin:
                 string loginToken = Properties.Settings.Default.LoginToken;
                 //MessageBox.Show(loginToken);

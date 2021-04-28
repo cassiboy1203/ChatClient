@@ -40,6 +40,7 @@ namespace ChatServer
             this.serverButtons1 = new ChatServer.ServerButtons();
             this.panel2 = new System.Windows.Forms.Panel();
             this.Menu = new System.Windows.Forms.Panel();
+            this.friendListMenu1 = new ChatServer.FriendListMenu();
             this.panel1 = new System.Windows.Forms.Panel();
             this.MenuBorder = new System.Windows.Forms.Panel();
             this.FriendAndChannelList = new System.Windows.Forms.Panel();
@@ -131,7 +132,7 @@ namespace ChatServer
             this.ServerList.Location = new System.Drawing.Point(0, 25);
             this.ServerList.Margin = new System.Windows.Forms.Padding(4);
             this.ServerList.Name = "ServerList";
-            this.ServerList.Size = new System.Drawing.Size(133, 1233);
+            this.ServerList.Size = new System.Drawing.Size(133, 639);
             this.ServerList.TabIndex = 2;
             // 
             // serverList1
@@ -139,10 +140,10 @@ namespace ChatServer
             this.serverList1.AutoScroll = true;
             this.serverList1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(34)))), ((int)(((byte)(37)))));
             this.serverList1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.serverList1.Location = new System.Drawing.Point(0, 124);
+            this.serverList1.Location = new System.Drawing.Point(0, 113);
             this.serverList1.Margin = new System.Windows.Forms.Padding(5);
             this.serverList1.Name = "serverList1";
-            this.serverList1.Size = new System.Drawing.Size(133, 1109);
+            this.serverList1.Size = new System.Drawing.Size(133, 526);
             this.serverList1.TabIndex = 1;
             // 
             // serverButtons1
@@ -165,13 +166,23 @@ namespace ChatServer
             // 
             // Menu
             // 
+            this.Menu.Controls.Add(this.friendListMenu1);
             this.Menu.Controls.Add(this.panel1);
             this.Menu.Dock = System.Windows.Forms.DockStyle.Top;
             this.Menu.Location = new System.Drawing.Point(133, 25);
             this.Menu.Margin = new System.Windows.Forms.Padding(4);
             this.Menu.Name = "Menu";
-            this.Menu.Size = new System.Drawing.Size(1807, 100);
+            this.Menu.Size = new System.Drawing.Size(1807, 60);
             this.Menu.TabIndex = 4;
+            // 
+            // friendListMenu1
+            // 
+            this.friendListMenu1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
+            this.friendListMenu1.Location = new System.Drawing.Point(399, 1);
+            this.friendListMenu1.Margin = new System.Windows.Forms.Padding(4);
+            this.friendListMenu1.Name = "friendListMenu1";
+            this.friendListMenu1.Size = new System.Drawing.Size(850, 60);
+            this.friendListMenu1.TabIndex = 1;
             // 
             // panel1
             // 
@@ -180,14 +191,14 @@ namespace ChatServer
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(400, 100);
+            this.panel1.Size = new System.Drawing.Size(400, 60);
             this.panel1.TabIndex = 0;
             // 
             // MenuBorder
             // 
             this.MenuBorder.BackColor = System.Drawing.Color.Black;
             this.MenuBorder.Dock = System.Windows.Forms.DockStyle.Top;
-            this.MenuBorder.Location = new System.Drawing.Point(133, 125);
+            this.MenuBorder.Location = new System.Drawing.Point(133, 85);
             this.MenuBorder.Margin = new System.Windows.Forms.Padding(4);
             this.MenuBorder.Name = "MenuBorder";
             this.MenuBorder.Size = new System.Drawing.Size(1807, 1);
@@ -198,16 +209,16 @@ namespace ChatServer
             this.FriendAndChannelList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
             this.FriendAndChannelList.Controls.Add(this.user1);
             this.FriendAndChannelList.Dock = System.Windows.Forms.DockStyle.Left;
-            this.FriendAndChannelList.Location = new System.Drawing.Point(133, 126);
+            this.FriendAndChannelList.Location = new System.Drawing.Point(133, 86);
             this.FriendAndChannelList.Margin = new System.Windows.Forms.Padding(4);
             this.FriendAndChannelList.Name = "FriendAndChannelList";
-            this.FriendAndChannelList.Size = new System.Drawing.Size(400, 1132);
+            this.FriendAndChannelList.Size = new System.Drawing.Size(400, 578);
             this.FriendAndChannelList.TabIndex = 7;
             // 
             // user1
             // 
             this.user1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.user1.Location = new System.Drawing.Point(0, 988);
+            this.user1.Location = new System.Drawing.Point(0, 434);
             this.user1.Margin = new System.Windows.Forms.Padding(5);
             this.user1.Name = "user1";
             this.user1.Size = new System.Drawing.Size(400, 144);
@@ -218,7 +229,7 @@ namespace ChatServer
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
-            this.ClientSize = new System.Drawing.Size(1940, 1258);
+            this.ClientSize = new System.Drawing.Size(1940, 664);
             this.Controls.Add(this.FriendAndChannelList);
             this.Controls.Add(this.MenuBorder);
             this.Controls.Add(this.Menu);
@@ -254,6 +265,7 @@ namespace ChatServer
         private Button btnMinimize;
         private Button btnMaximize;
         public User user1;
+        private FriendListMenu friendListMenu1;
     }
 }
 
