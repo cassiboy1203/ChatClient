@@ -34,6 +34,17 @@ namespace ChatServer
             UpdateFriend();
         }
 
+        public Friend(string token, string name)
+        {
+            InitializeComponent();
+            Token = token;
+            UserName = name;
+
+            lbFriendStatusText.Visible = false;
+
+            UpdateFriend();
+        }
+
         public string Token;
         public string UserName;
         public UserStatus Status;

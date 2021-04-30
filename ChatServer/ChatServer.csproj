@@ -53,6 +53,7 @@
       <DependentUpon>AddFriend.cs</DependentUpon>
     </Compile>
     <Compile Include="AuthClient.cs" />
+    <Compile Include="CustomColorTable.cs" />
     <Compile Include="DirectMessages.cs">
       <SubType>UserControl</SubType>
     </Compile>
