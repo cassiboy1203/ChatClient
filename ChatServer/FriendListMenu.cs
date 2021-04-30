@@ -30,6 +30,7 @@ namespace ChatServer
         public Layout MainLayout { get => _layout; set => _layout = value; }
         public List<Friend> Friends;
         public List<Friend> Requests;
+        public List<Friend> BlockedUsers;
 
         private Layout _layout;
         public FriendList FriendList;
@@ -38,8 +39,9 @@ namespace ChatServer
 
         public void SetupMenu()
         {
-            AuthClient.GetFriends(ActionCodes.GetFriends, this, out Friends);
-            AuthClient.GetFriends(ActionCodes.GetRequest, this, out Requests);
+            AuthClient.GetFriends(ActionCodes.GetFriends, this, out Friends, 0);
+            AuthClient.GetFriends(ActionCodes.GetRequest, this, out Requests, 0);
+            AuthClient.GetFriends(ActionCodes.GetBlockedUsers, this, out BlockedUsers, 0);
             ShowFriendList(_selectedScreen);
         }
 
@@ -58,13 +60,21 @@ namespace ChatServer
             FriendList.lbFriends.Items.Clear();
             FriendList.lbFriends.Controls.Clear();
 
+            FriendList.blockToolStripMenuItem.Text = "Block";
+            FriendList.blockToolStripMenuItem.Click -= FriendList.BlockToolStripMenuItem_Click;
+            FriendList.blockToolStripMenuItem.Click += FriendList.BlockToolStripMenuItem_Click;
+            FriendList.blockToolStripMenuItem.Click -= FriendList.UnBlockToolStripMenuItem_Click;
+
             switch (filter)
             {
                 case Screens.Pending:
                     friends = Requests;
                     break;
                 case Screens.Blocked:
-                    //TODO: get blocked users
+                    friends = BlockedUsers;
+                    FriendList.blockToolStripMenuItem.Text = "Unblock";
+                    FriendList.blockToolStripMenuItem.Click -= FriendList.BlockToolStripMenuItem_Click;
+                    FriendList.blockToolStripMenuItem.Click += FriendList.UnBlockToolStripMenuItem_Click;
                     break;
             }
             if (friends != null)
@@ -84,12 +94,10 @@ namespace ChatServer
                             friend.btnAccept.Visible = true;
                             friend.btnReject.Visible = true;
                             break;
-                        case Screens.Blocked:
-                            //TODO: get blocked
-                            break;
                     }
                     friend.Size = new Size(FriendList.lbFriends.Width, friend.Height);
                     friend.Anchor = (AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right);
+                    friend.MouseClick += BtnFriend_Click;
                     FriendList.lbFriends.Items.Add(friend);
                     FriendList.lbFriends.Controls.Add(friend);
 
@@ -236,6 +244,36 @@ namespace ChatServer
             btnAddFriends.FlatAppearance.BorderColor = btnAddFriends.BackColor;
             btnAddFriends.FlatAppearance.MouseOverBackColor = btnAddFriends.BackColor;
             btnAddFriends.ForeColor = Color.White;
+        }
+
+        private void LbBlocked_Click(object sender, EventArgs e)
+        {
+            ShowFriendList(Screens.Blocked);
+            lbOnline.ForeColor = Color.Silver;
+            lbAll.ForeColor = Color.Silver;
+            lbPending.ForeColor = Color.Silver;
+            lbBlocked.ForeColor = Color.White;
+            btnAddFriends.BackColor = Color.FromArgb(67, 181, 115);
+            btnAddFriends.FlatAppearance.BorderColor = btnAddFriends.BackColor;
+            btnAddFriends.FlatAppearance.MouseOverBackColor = btnAddFriends.BackColor;
+            btnAddFriends.ForeColor = Color.White;
+        }
+
+        private void BtnFriend_Click(object sender, MouseEventArgs e)
+        {
+            Friend friend = sender as Friend;
+            if (e.Button == MouseButtons.Right)
+            {
+                FriendList.cmsUserOptions.MouseLeave += BtnFriend_MouseLeave;
+                FriendList.cmsUserOptions.Show(Cursor.Position);
+
+                FriendList.SelectedFriend = friend;
+            }
+        }
+
+        private void BtnFriend_MouseLeave(object sender, EventArgs e)
+        {
+            FriendList.cmsUserOptions.Hide();
         }
     }
 }

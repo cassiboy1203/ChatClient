@@ -102,7 +102,7 @@ namespace ChatServer
             LabelRetry:
             if (AuthClient.ConnectToServer())
             {
-                Properties.Settings.Default.Reset();
+                //Properties.Settings.Default.Reset();
                 LabelRetryLogin:
                 string loginToken = Properties.Settings.Default.LoginToken;
                 //MessageBox.Show(loginToken);

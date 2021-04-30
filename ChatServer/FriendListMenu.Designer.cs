@@ -109,6 +109,7 @@ namespace ChatServer
             this.lbBlocked.Size = new System.Drawing.Size(110, 37);
             this.lbBlocked.TabIndex = 5;
             this.lbBlocked.Text = "Blocked";
+            this.lbBlocked.Click += new System.EventHandler(this.LbBlocked_Click);
             // 
             // btnAddFriends
             // 

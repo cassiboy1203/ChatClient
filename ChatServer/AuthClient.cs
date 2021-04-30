@@ -24,6 +24,9 @@ namespace ChatServer
         GetRequest = 0x09,
         AcceptRequest = 0x0A,
         RejectRequest = 0x0B,
+        BlockUser = 0x0C,
+        UnblockUser = 0x0D,
+        GetBlockedUsers = 0x0E,
 
     }
 
@@ -220,15 +223,17 @@ namespace ChatServer
             return reply == ReplyCodes.FriendRequestSend;
         }
 
-        public static bool GetFriends(ActionCodes filter, FriendListMenu flm, out List<Friend> friends)
+        public static bool GetFriends(ActionCodes filter, FriendListMenu flm, out List<Friend> friends, int timestamp)
         {
             friends = new List<Friend>();
 
-            byte[] messageLenthBytes = {0, 0, 0, 0};
-            byte[] buffer = new byte[21];
+            byte[] message = BuildMessage(timestamp.ToString());
+            byte[] messageLenthBytes = BitConverter.GetBytes(message.Length);
+            byte[] buffer = new byte[21 + message.Length];
             Array.Copy(AuthKey, 0, buffer, 0, 16);
             buffer[16] = (byte) filter;
             Array.Copy(messageLenthBytes, 0, buffer, 17, 4);
+            Array.Copy(message, 0, buffer, 21, message.Length);
 
             _authServer.Send(buffer);
 
@@ -242,14 +247,14 @@ namespace ChatServer
             {
                 int messageLength = BitConverter.ToInt32(buffer, 17);
             
-                byte[] message = new byte[messageLength];
-                Array.Copy(buffer, 21, message, 0, buffer.Length - 21);
+                byte[] replyMessage = new byte[messageLength];
+                Array.Copy(buffer, 21, replyMessage, 0, buffer.Length - 21);
                 if (messageLength > 1024 - 21)
                 {
-                    GetFullMessage(messageLength, buffer.Length - 21, ref message);
+                    GetFullMessage(messageLength, buffer.Length - 21, ref replyMessage);
                 }
 
-                List<List<byte[]>> extendedMessages = ReadExtendeMessage(message);
+                List<List<byte[]>> extendedMessages = ReadExtendeMessage(replyMessage);
 
                 foreach (var messageList in extendedMessages)
                 {
@@ -265,6 +270,10 @@ namespace ChatServer
                     if (filter == ActionCodes.GetRequest)
                     {
                         friend = new Friend(friendToken, friendName, flm);
+                    }
+                    else if (filter == ActionCodes.GetBlockedUsers)
+                    {
+                        friend = new Friend(friendToken, friendName);
                     }
                     else
                     {
@@ -299,7 +308,29 @@ namespace ChatServer
             ReplyCodes reply = (ReplyCodes) buffer[0];
             Array.Copy(buffer, 1, AuthKey, 0, 16);
 
-            return reply != ReplyCodes.InvalidAction && reply != ReplyCodes.InvalidArgs && reply != ReplyCodes.InvalidKey;
+            return reply == ReplyCodes.Confirm;
+        }
+
+        public static bool BlockUser(string userToken, bool isBlocked)
+        {
+            byte[] message = BuildMessage(userToken);
+            byte[] messageLengthBytes = BitConverter.GetBytes(message.Length);
+            byte[] buffer = new byte[message.Length + 21];
+            Array.Copy(AuthKey, 0, buffer, 0, 16);
+            buffer[16] = isBlocked ? (byte) ActionCodes.UnblockUser : (byte) ActionCodes.BlockUser;
+            Array.Copy(messageLengthBytes, 0, buffer, 17, 4);
+            Array.Copy(message, 0, buffer, 21, message.Length);
+
+            _authServer.Send(buffer);
+
+            buffer = new byte[1024];
+            int replyLength = _authServer.Receive(buffer);
+            Array.Resize(ref buffer, replyLength);
+
+            ReplyCodes reply = (ReplyCodes) buffer[0];
+            Array.Copy(buffer, 1, AuthKey, 0, 16);
+
+            return reply == ReplyCodes.Confirm;
         }
 
         private static void GetFullMessage(int length, int pointer, ref byte[] message)
