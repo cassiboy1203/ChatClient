@@ -27,6 +27,7 @@ namespace ChatServer
         BlockUser = 0x0C,
         UnblockUser = 0x0D,
         GetBlockedUsers = 0x0E,
+        SendPrivateMessage = 0x0F,
 
     }
 
@@ -47,6 +48,7 @@ namespace ChatServer
         FriendRequestExists = 0x0C,
         FriendsFound = 0x0D,
         FriendsNotFound = 0x0E,
+        MessageReceived = 0x0F,
 
     }
 
@@ -228,11 +230,11 @@ namespace ChatServer
             friends = new List<Friend>();
 
             byte[] message = BuildMessage(timestamp.ToString());
-            byte[] messageLenthBytes = BitConverter.GetBytes(message.Length);
+            byte[] messageLengthBytes = BitConverter.GetBytes(message.Length);
             byte[] buffer = new byte[21 + message.Length];
             Array.Copy(AuthKey, 0, buffer, 0, 16);
             buffer[16] = (byte) filter;
-            Array.Copy(messageLenthBytes, 0, buffer, 17, 4);
+            Array.Copy(messageLengthBytes, 0, buffer, 17, 4);
             Array.Copy(message, 0, buffer, 21, message.Length);
 
             _authServer.Send(buffer);
@@ -331,6 +333,41 @@ namespace ChatServer
             Array.Copy(buffer, 1, AuthKey, 0, 16);
 
             return reply == ReplyCodes.Confirm;
+        }
+
+        public static bool SendMessage(string text, string userToken)
+        {
+            byte[] message = BuildMessage(text, userToken);
+            byte[] messageLengthBytes = BitConverter.GetBytes(message.Length);
+            byte[] buffer = new byte[message.Length + 21];
+            Array.Copy(AuthKey, 0, buffer, 0, 16);
+            buffer[16] = (byte) ActionCodes.SendPrivateMessage;
+            Array.Copy(messageLengthBytes, 0, buffer, 17, 4);
+            Array.Copy(message, 0, buffer, 21, message.Length);
+
+            if (buffer.Length > 1024)
+            {
+                int pointer = 0;
+                while (pointer < buffer.Length)
+                {
+                    int messageLength = buffer.Length - pointer > 1024 ? 1025 : buffer.Length - pointer;
+                    byte[] splitBuffer = new byte[messageLength];
+                    Array.Copy(buffer, pointer, splitBuffer, 0, messageLength);
+
+                    _authServer.Send(splitBuffer);
+                    pointer += messageLength;
+                }
+            }
+            else _authServer.Send(buffer);
+
+            buffer = new byte[1024];
+            int replyLength = _authServer.Receive(buffer);
+            Array.Resize(ref buffer, replyLength);
+
+            ReplyCodes reply = (ReplyCodes) buffer[0];
+            Array.Copy(buffer, 1, AuthKey, 0, 16);
+
+            return reply == ReplyCodes.MessageReceived;
         }
 
         private static void GetFullMessage(int length, int pointer, ref byte[] message)

@@ -34,3 +34,5 @@ C:\Users\casvs\Documents\ChatServer\Repos\ChatServer\ChatServer\obj\Debug\ChatSe
 C:\Users\casvs\Documents\ChatServer\Repos\ChatServer\ChatServer\obj\Debug\ChatServer.exe
 C:\Users\casvs\Documents\ChatServer\Repos\ChatServer\ChatServer\obj\Debug\ChatServer.pdb
 C:\Users\casvs\Documents\ChatServer\Repos\ChatServer\ChatServer\obj\Debug\ChatServer.Layout.resources
+C:\Users\casvs\Documents\ChatServer\Repos\ChatServer\ChatServer\obj\Debug\ChatServer.Message.resources
+C:\Users\casvs\Documents\ChatServer\Repos\ChatServer\ChatServer\obj\Debug\ChatServer.MessageList.resources

@@ -12,14 +12,17 @@ namespace ChatServer
 {
     public partial class FriendList : UserControl
     {
-        public FriendList()
+        public FriendList(FriendListMenu menu)
         {
             InitializeComponent();
 
             cmsUserOptions.Renderer = new ToolStripProfessionalRenderer(new CustomColorTable());
+            _menu = menu;
         }
 
         public Friend SelectedFriend;
+
+        private FriendListMenu _menu;
 
         private void ToolStripMenuItem_MouseEnter(object sender, EventArgs e)
         {
@@ -38,7 +41,7 @@ namespace ChatServer
 
         private void MessageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //TODO: start/open private messages
+            _menu.OpenPrivateMessages(SelectedFriend.Token);
         }
 
         private void RemoveFriendToolStripMenuItem_Click(object sender, EventArgs e)

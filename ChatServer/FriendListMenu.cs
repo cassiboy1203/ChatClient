@@ -36,6 +36,7 @@ namespace ChatServer
         public FriendList FriendList;
         private AddFriend _addFriend;
         private Screens _selectedScreen = Screens.Online;
+        private MessageList _messageList;
 
         public void SetupMenu()
         {
@@ -49,7 +50,7 @@ namespace ChatServer
         {
             if (!_layout.Controls.Contains(FriendList))
             {
-                FriendList = new FriendList();
+                FriendList = new FriendList(this);
                 FriendList.Dock = DockStyle.Fill;
                 _layout.Controls.Add(FriendList);
                 FriendList.BringToFront();
@@ -274,6 +275,17 @@ namespace ChatServer
         private void BtnFriend_MouseLeave(object sender, EventArgs e)
         {
             FriendList.cmsUserOptions.Hide();
+        }
+
+        public void OpenPrivateMessages(string userToken)
+        {
+            if (!_layout.Controls.Contains(_messageList))
+            {
+                _messageList = new MessageList(userToken);
+                _messageList.Dock = DockStyle.Fill;
+                _layout.Controls.Add(_messageList);
+                _messageList.BringToFront();
+            }
         }
     }
 }

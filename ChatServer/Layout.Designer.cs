@@ -36,6 +36,7 @@ namespace ChatServer
             this.btnMaximize = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
             this.ServerList = new System.Windows.Forms.Panel();
+            this.lbServerList = new System.Windows.Forms.ListBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.Menu = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -44,7 +45,6 @@ namespace ChatServer
             this.user1 = new ChatServer.User();
             this.friendListMenu1 = new ChatServer.FriendListMenu();
             this.serverButtons1 = new ChatServer.ServerButtons();
-            this.lbServerList = new System.Windows.Forms.ListBox();
             this.FormBorder.SuspendLayout();
             this.ServerList.SuspendLayout();
             this.Menu.SuspendLayout();
@@ -135,6 +135,20 @@ namespace ChatServer
             this.ServerList.Size = new System.Drawing.Size(133, 623);
             this.ServerList.TabIndex = 2;
             // 
+            // lbServerList
+            // 
+            this.lbServerList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbServerList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(34)))), ((int)(((byte)(37)))));
+            this.lbServerList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lbServerList.FormattingEnabled = true;
+            this.lbServerList.ItemHeight = 16;
+            this.lbServerList.Location = new System.Drawing.Point(3, 119);
+            this.lbServerList.Name = "lbServerList";
+            this.lbServerList.Size = new System.Drawing.Size(130, 496);
+            this.lbServerList.TabIndex = 9;
+            // 
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -189,10 +203,10 @@ namespace ChatServer
             // user1
             // 
             this.user1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.user1.Location = new System.Drawing.Point(0, 418);
+            this.user1.Location = new System.Drawing.Point(0, 470);
             this.user1.Margin = new System.Windows.Forms.Padding(5);
             this.user1.Name = "user1";
-            this.user1.Size = new System.Drawing.Size(400, 144);
+            this.user1.Size = new System.Drawing.Size(400, 92);
             this.user1.TabIndex = 0;
             // 
             // friendListMenu1
@@ -213,20 +227,6 @@ namespace ChatServer
             this.serverButtons1.Name = "serverButtons1";
             this.serverButtons1.Size = new System.Drawing.Size(133, 97);
             this.serverButtons1.TabIndex = 1;
-            // 
-            // lbServerList
-            // 
-            this.lbServerList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbServerList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(34)))), ((int)(((byte)(37)))));
-            this.lbServerList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lbServerList.FormattingEnabled = true;
-            this.lbServerList.ItemHeight = 16;
-            this.lbServerList.Location = new System.Drawing.Point(3, 119);
-            this.lbServerList.Name = "lbServerList";
-            this.lbServerList.Size = new System.Drawing.Size(130, 496);
-            this.lbServerList.TabIndex = 9;
             // 
             // Layout
             // 
