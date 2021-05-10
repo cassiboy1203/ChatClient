@@ -256,7 +256,7 @@ namespace ChatServer
                     GetFullMessage(messageLength, buffer.Length - 21, ref replyMessage);
                 }
 
-                List<List<byte[]>> extendedMessages = ReadExtendeMessage(replyMessage);
+                List<List<byte[]>> extendedMessages = ReadExtendedMessage(replyMessage);
 
                 foreach (var messageList in extendedMessages)
                 {
@@ -370,6 +370,48 @@ namespace ChatServer
             return reply == ReplyCodes.MessageReceived;
         }
 
+        public static bool GetPrivateMessages(string userToken, int lastUpdate, out List<Message> messages)
+        {
+            byte[] sendMessage = BuildMessage(userToken, lastUpdate.ToString());
+            byte[] messageLengthBytes = BitConverter.GetBytes(sendMessage.Length);
+            byte[] buffer = new byte[sendMessage.Length + 21];
+            Array.Copy(AuthKey, 0, buffer, 0, 16);
+            buffer[16] = (byte) ActionCodes.SendPrivateMessage;
+            Array.Copy(messageLengthBytes, 0, buffer, 17, 4);
+            Array.Copy(sendMessage, 0, buffer, 21, sendMessage.Length);
+
+            buffer = new byte[1024];
+            int replyLength = _authServer.Receive(buffer);
+            Array.Resize(ref buffer, replyLength);
+
+            ReplyCodes reply = (ReplyCodes) buffer[0];
+            Array.Copy(buffer, 1, AuthKey, 0, 16);
+            messages = new List<Message>();
+            if (reply == ReplyCodes.Confirm)
+            {
+                int replyMessageLength = BitConverter.ToInt32(buffer, 17);
+
+                byte[] replyMessage = new byte[replyMessageLength];
+                Array.Copy(buffer, 21, replyMessage, 0, replyLength - 21);
+                GetFullMessage(replyMessageLength, replyLength - 21, ref replyMessage);
+
+                List<List<byte[]>> extendedMessages = ReadExtendedMessage(replyMessage);
+
+                foreach (var extendedMessage in extendedMessages)
+                {
+                    string text = Encoding.UTF8.GetString(extendedMessage[0]);
+                    DateTime date = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt32(Encoding.UTF8.GetString(extendedMessage[1]))).LocalDateTime;
+
+                    Message message = new Message(text, date);
+                    messages.Add(message);
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
         private static void GetFullMessage(int length, int pointer, ref byte[] message)
         {
             while (pointer < length)
@@ -384,7 +426,7 @@ namespace ChatServer
             }
         }
 
-        private static List<List<byte[]>> ReadExtendeMessage(byte[] buffer)
+        private static List<List<byte[]>> ReadExtendedMessage(byte[] buffer)
         {
             int pointer = 0;
             List<byte[]> messageBytes = new List<byte[]>();

@@ -28,9 +28,20 @@ namespace ChatServer
             _channelId = channelId;
         }
 
-        private void ShowMessages()
+        private void ShowMessages(UserInfo user)
         {
+            if (AuthClient.GetPrivateMessages(user.Token, 0, out List<Message> messages))
+            {
+                foreach (var message in messages)
+                {
+                    message.UpdateUserInfo(user);
+                    message.Anchor = (AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right);
+                    message.Size = new Size(lbMessages.Width, message.Height);
 
+                    lbMessages.Items.Add(messages);
+                    lbMessages.Controls.Add(message);
+                }
+            }
         }
 
         private string _userToken;
@@ -43,6 +54,8 @@ namespace ChatServer
                 string message = tbMessage.Text;
 
                 AuthClient.SendMessage(message, _userToken);
+
+                tbMessage.TextBox.Clear();
             }
         }
     }
