@@ -41,7 +41,7 @@ namespace ChatServer
 
         private void MessageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _menu.OpenPrivateMessages(SelectedFriend.Token);
+            _menu.OpenPrivateMessages(SelectedFriend.FriendInfo);
         }
 
         private void RemoveFriendToolStripMenuItem_Click(object sender, EventArgs e)
@@ -51,12 +51,12 @@ namespace ChatServer
 
         public void BlockToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AuthClient.BlockUser(SelectedFriend.Token, false);
+            AuthClient.BlockUser(SelectedFriend.FriendInfo.Token, false);
         }
 
         public void UnBlockToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AuthClient.BlockUser(SelectedFriend.Token, true);
+            AuthClient.BlockUser(SelectedFriend.FriendInfo.Token, true);
         }
     }
 }

@@ -86,7 +86,7 @@ namespace ChatServer
                     switch (filter)
                     {
                         case Screens.Online:
-                            if (friend.Status == UserStatus.Offline || friend.Status == UserStatus.Invisible)
+                            if (friend.FriendInfo.status == UserStatus.Offline || friend.FriendInfo.status == UserStatus.Invisible)
                             {
                                 continue;
                             }
@@ -277,14 +277,16 @@ namespace ChatServer
             FriendList.cmsUserOptions.Hide();
         }
 
-        public void OpenPrivateMessages(string userToken)
+        public void OpenPrivateMessages(UserInfo user)
         {
             if (!_layout.Controls.Contains(_messageList))
             {
-                _messageList = new MessageList(userToken);
+                _messageList = new MessageList(user.Token);
                 _messageList.Dock = DockStyle.Fill;
                 _layout.Controls.Add(_messageList);
                 _messageList.BringToFront();
+
+                _messageList.ShowMessages(user);
             }
         }
     }

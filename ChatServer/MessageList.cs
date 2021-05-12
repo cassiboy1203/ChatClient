@@ -28,12 +28,23 @@ namespace ChatServer
             _channelId = channelId;
         }
 
-        private void ShowMessages(UserInfo user)
+        public void ShowMessages(UserInfo user)
         {
             if (AuthClient.GetPrivateMessages(user.Token, 0, out List<Message> messages))
             {
+                DateTime lastDate = DateTime.MinValue;
                 foreach (var message in messages)
                 {
+                    if (message.MessageDate.Date > lastDate.Date)
+                    {
+                        lastDate = message.MessageDate;
+                        MessageTimeStamp timeStamp = new MessageTimeStamp(lastDate);
+                        timeStamp.Anchor = (AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right);
+                        timeStamp.Size = new Size(lbMessages.Width, message.Height);
+
+                        lbMessages.Items.Add(timeStamp);
+                        lbMessages.Controls.Add(timeStamp);
+                    }
                     message.UpdateUserInfo(user);
                     message.Anchor = (AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right);
                     message.Size = new Size(lbMessages.Width, message.Height);

@@ -15,7 +15,7 @@ namespace ChatServer
         public Message(string message, DateTime date)
         {
             _message = message;
-            _messageDate = date;
+            MessageDate = date;
 
             tbMessage.Text = message;
             lbDate.Text = date.ToString(date.Date == DateTime.Today.Date ? "HH:mm:ss" : "dd/MM/yyyy");
@@ -26,7 +26,7 @@ namespace ChatServer
 
             _message = message;
             _user = user;
-            _messageDate = date;
+            MessageDate = date;
 
             tbMessage.Text = message;
             lbUserName.Text = user.Name;
@@ -34,7 +34,7 @@ namespace ChatServer
         }
 
         private UserInfo _user;
-        private DateTime _messageDate;
+        public DateTime MessageDate;
         private string _message;
 
         public void UpdateUserInfo(UserInfo user)
@@ -42,6 +42,22 @@ namespace ChatServer
             _user = user;
 
             lbUserName.Text = user.Name;
+        }
+
+        private void TbMessage_TextChanged(object sender, EventArgs e)
+        {
+            int length = tbMessage.Lines.Length;
+            int lineHeight = tbMessage.Font.Height;
+            tbMessage.Height = (lineHeight + 2) * length;
+
+            int height = 35 + tbMessage.Height;
+
+            if (height < 66)
+            {
+                height = 66;
+            }
+
+            //this.Height = height;
         }
     }
 }

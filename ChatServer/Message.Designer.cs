@@ -52,7 +52,7 @@ namespace ChatServer
             // 
             this.lbDate.AutoSize = true;
             this.lbDate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(114)))), ((int)(((byte)(118)))), ((int)(((byte)(125)))));
-            this.lbDate.Location = new System.Drawing.Point(189, 14);
+            this.lbDate.Location = new System.Drawing.Point(189, 12);
             this.lbDate.Name = "lbDate";
             this.lbDate.Size = new System.Drawing.Size(80, 17);
             this.lbDate.TabIndex = 5;
@@ -65,13 +65,15 @@ namespace ChatServer
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbMessage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
             this.tbMessage.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tbMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbMessage.ForeColor = System.Drawing.Color.White;
-            this.tbMessage.Location = new System.Drawing.Point(84, 44);
+            this.tbMessage.Location = new System.Drawing.Point(84, 35);
             this.tbMessage.Multiline = true;
             this.tbMessage.Name = "tbMessage";
             this.tbMessage.ReadOnly = true;
-            this.tbMessage.Size = new System.Drawing.Size(597, 19);
+            this.tbMessage.Size = new System.Drawing.Size(597, 104);
             this.tbMessage.TabIndex = 6;
+            this.tbMessage.TextChanged += new System.EventHandler(this.TbMessage_TextChanged);
             // 
             // roundPictureBox1
             // 
@@ -94,7 +96,7 @@ namespace ChatServer
             this.Controls.Add(this.lbUserName);
             this.Controls.Add(this.roundPictureBox1);
             this.Name = "Message";
-            this.Size = new System.Drawing.Size(684, 75);
+            this.Size = new System.Drawing.Size(684, 150);
             ((System.ComponentModel.ISupportInitialize)(this.roundPictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

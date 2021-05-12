@@ -102,6 +102,12 @@
     <Compile Include="MessageList.Designer.cs">
       <DependentUpon>MessageList.cs</DependentUpon>
     </Compile>
+    <Compile Include="MessageTimeStamp.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MessageTimeStamp.Designer.cs">
+      <DependentUpon>MessageTimeStamp.cs</DependentUpon>
+    </Compile>
     <Compile Include="PlaceholderTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -159,6 +165,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MessageList.resx">
       <DependentUpon>MessageList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageTimeStamp.resx">
+      <DependentUpon>MessageTimeStamp.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

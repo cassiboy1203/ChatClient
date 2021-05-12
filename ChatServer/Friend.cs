@@ -17,9 +17,9 @@ namespace ChatServer
         public Friend(string token, string name, UserStatus status)
         {
             InitializeComponent();
-            Token = token;
-            UserName = name;
-            Status = status;
+            FriendInfo.Token = token;
+            FriendInfo.Name = name;
+            FriendInfo.status = status;
 
             UpdateFriend();
         }
@@ -27,8 +27,8 @@ namespace ChatServer
         public Friend(string token, string name, FriendListMenu friendListMenu)
         {
             InitializeComponent();
-            Token = token;
-            UserName = name;
+            FriendInfo.Token = token;
+            FriendInfo.Name = name;
             _friendListMenu = friendListMenu;
 
             UpdateFriend();
@@ -37,24 +37,21 @@ namespace ChatServer
         public Friend(string token, string name)
         {
             InitializeComponent();
-            Token = token;
-            UserName = name;
+            FriendInfo.Token = token;
+            FriendInfo.Name = name;
 
             lbFriendStatusText.Visible = false;
 
             UpdateFriend();
         }
 
-        public string Token;
-        public string UserName;
-        public UserStatus Status;
-        public Image Image;
         private FriendListMenu _friendListMenu;
+        public UserInfo FriendInfo = new UserInfo();
 
         private void UpdateFriend()
         {
-            lbFriendName.Text = UserName;
-            lbFriendStatusText.Text = Status.ToString();
+            lbFriendName.Text = FriendInfo.Name;
+            lbFriendStatusText.Text = FriendInfo.status.ToString();
 
             //TODO: update status color.
             //TODO: update image.
@@ -62,7 +59,7 @@ namespace ChatServer
 
         private void BtnAccept_Click(object sender, EventArgs e)
         {
-            if (AuthClient.FriendRequestReply(Token, true))
+            if (AuthClient.FriendRequestReply(FriendInfo.Token, true))
             {
                 _friendListMenu.SetupMenu();
             }
@@ -70,7 +67,7 @@ namespace ChatServer
 
         private void BtnReject_Click(object sender, EventArgs e)
         {
-            if (AuthClient.FriendRequestReply(Token, false))
+            if (AuthClient.FriendRequestReply(FriendInfo.Token, false))
             {
                 _friendListMenu.SetupMenu();
             }
